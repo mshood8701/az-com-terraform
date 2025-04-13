@@ -1,7 +1,7 @@
-🚀 Deploying a Secure Ubuntu VM on Azure Using Terraform
+###🚀 Deploying a Secure Ubuntu VM on Azure Using Terraform
 This repository outlines the structured deployment of a Ubuntu 22.04 LTS Virtual Machine in Microsoft Azure, leveraging Terraform as an Infrastructure-as-Code (IaC) solution. The approach emphasizes security, simplicity, and operational readiness, in line with best practices for enterprise-grade environments. Key infrastructure components are explicitly defined, ensuring transparency, reusability, and adaptability in the face of cloud policy constraints.
 
-🧭 Project Goals
+##🧭 Project Goals
 Deploy a Linux VM within the West US Azure region
 
 Enforce secure SSH access via static public IP
@@ -12,15 +12,16 @@ Maintain clean, modular Terraform configurations for long-term manageability
 
 Address practical deployment limitations commonly found in policy-restricted enterprise environments
 
-📂 Repository Overview
-File Name	Description
-main.tf	  Declares the virtual machine and associated networking resources
-networking.tf	  Defines the VNet, Subnet, Route Table, and relevant associations
-resources-group.tf	Provisions the Azure Resource Group
-provider.tf	  Sets up the Terraform provider and backend (if applicable)
-README.md	  Provides usage documentation and deployment notes
+##📂 Repository Overview
+| File                  | Purpose |
+|-----------------------|---------|
+| `main.tf`             | Defines the VM and core networking resources |
+| `networking.tf`       | Contains VNet, Subnet, Route Table, and associations |
+| `resources-group.tf`  | Creates the Azure Resource Group |
+| `provider.tf`         | Declares Terraform provider setup |
+| `README.md`           | Documentation and project guidance |
 
-⚠️ Known Challenges & Mitigation Strategies
+##⚠️ Known Challenges & Mitigation Strategies
 ❌ Policy Restriction: Premium SKUs Blocked
 Issue: The Azure subscription enforces a policy preventing use of Premium SKUs (e.g., Premium_LRS, high-performance VM sizes).
 
@@ -44,7 +45,7 @@ Adherence to existing governance rules
 
 Preservation of operational continuity
 
-🔐 Security-First Configuration
+##🔐 Security-First Configuration
 Password authentication is disabled:
 disable_password_authentication = true
 
@@ -52,7 +53,7 @@ SSH access is restricted to public key authentication only
 
 NSG limits inbound traffic strictly to port 22
 
-✅ Summary: Why This Matters
+##✅ This project examplifies:
 This deployment showcases how Terraform can be harnessed effectively in real-world, policy-bound Azure environments. It reflects a pragmatic approach to:
 
 Navigating enterprise cloud governance
