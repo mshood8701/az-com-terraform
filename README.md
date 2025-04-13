@@ -1,71 +1,65 @@
-# Azure Ubuntu VM Deployment with Terraform
+🚀 Deploying a Secure Ubuntu VM on Azure Using Terraform
+This repository outlines the structured deployment of a Ubuntu 22.04 LTS Virtual Machine in Microsoft Azure, leveraging Terraform as an Infrastructure-as-Code (IaC) solution. The approach emphasizes security, simplicity, and operational readiness, in line with best practices for enterprise-grade environments. Key infrastructure components are explicitly defined, ensuring transparency, reusability, and adaptability in the face of cloud policy constraints.
 
-This repository demonstrates the deployment of a secure, lightweight **Ubuntu Linux Virtual Machine (Ubuntu 22.04 LTS)** in **Microsoft Azure**, using **Terraform** as an Infrastructure-as-Code (IaC) tool. The configuration reflects a production-conscious mindset, enforcing secure SSH authentication, structured networking, and resilience against platform-level restrictions.
+🧭 Project Goals
+Deploy a Linux VM within the West US Azure region
 
----
+Enforce secure SSH access via static public IP
 
-## 🛠️ Project Objectives
+Automate key networking resources: Virtual Network, Subnet, Route Table, and Network Security Group
 
-- Provision a Linux VM in the `West US` Azure region
-- Enable secure public SSH access using a static IP
-- Automate networking components: VNet, Subnet, Route Table, NSG
-- Leverage reusable and maintainable Terraform code structure
-- Solve real-world deployment constraints (covered below)
+Maintain clean, modular Terraform configurations for long-term manageability
 
----
+Address practical deployment limitations commonly found in policy-restricted enterprise environments
 
-## 📁 Project Structure
+📂 Repository Overview
+File Name	Description
+main.tf	  Declares the virtual machine and associated networking resources
+networking.tf	  Defines the VNet, Subnet, Route Table, and relevant associations
+resources-group.tf	Provisions the Azure Resource Group
+provider.tf	  Sets up the Terraform provider and backend (if applicable)
+README.md	  Provides usage documentation and deployment notes
 
-| File                  | Purpose |
-|-----------------------|---------|
-| `main.tf`             | Defines the VM and core networking resources |
-| `networking.tf`       | Contains VNet, Subnet, Route Table, and associations |
-| `resources-group.tf`  | Creates the Azure Resource Group |
-| `provider.tf`         | Declares Terraform provider setup |
-| `README.md`           | Documentation and project guidance |
+⚠️ Known Challenges & Mitigation Strategies
+❌ Policy Restriction: Premium SKUs Blocked
+Issue: The Azure subscription enforces a policy preventing use of Premium SKUs (e.g., Premium_LRS, high-performance VM sizes).
 
----
+Approach:
 
-## ⚠️ Deployment Challenges & Workarounds
-
-### ❌ Challenge 1: Azure Policy Blocked Premium SKUs
-
-**Issue**: The Azure subscription had a policy that **prevented the use of Premium SKUs** (e.g., `Premium_LRS`, certain VM sizes).
-
-**Solution**: We explicitly selected **Standard SKUs** compatible with the policy:
-```hcl
+hcl
 os_disk {
   storage_account_type = "Standard_LRS"
 }
 size = "Standard_B2s"
+By explicitly choosing Standard-tier configurations, the deployment remains compliant without sacrificing core functionality.
 
-### ❌ Challenge 2: Resource Creation was Blocked by Policy
+❌ Policy Restriction: Resource Creation Denied
+Issue: Some Terraform-created resources were rejected due to policy constraints.
 
-**Issue**: A restrictive policy prevented Terraform from creating certain resources.
+Workaround: Where resource creation was blocked, we used the terraform import command to incorporate pre-existing infrastructure into the Terraform state. This allowed for:
 
-**Solution**: We used the terraform import command to bring existing Azure resources under Terraform management. This allowed us to:
+Continued use of Terraform for state tracking and change management
 
-Preserve infrastructure already in place
+Adherence to existing governance rules
 
-Continue using Terraform for change management
+Preservation of operational continuity
 
-Comply with enterprise governance constraints
+🔐 Security-First Configuration
+Password authentication is disabled:
+disable_password_authentication = true
 
+SSH access is restricted to public key authentication only
 
-🔐 Security Considerations
-Password login is disabled (disable_password_authentication = true)
+NSG limits inbound traffic strictly to port 22
 
-SSH public key authentication is enforced
+✅ Summary: Why This Matters
+This deployment showcases how Terraform can be harnessed effectively in real-world, policy-bound Azure environments. It reflects a pragmatic approach to:
 
-NSG restricts inbound traffic to port 22 only
+Navigating enterprise cloud governance
 
+Enforcing baseline security and operational discipline
 
-This project exemplifies:
+Structuring IaC for maintainability and clarity
 
-Using Terraform effectively in enterprise Azure environments
+Building resilient, minimal infrastructure without overreach
 
-Adapting to constraints like policy-enforced governance
-
-Secure, minimal virtual machine provisioning
-
-Production-grade network design fundamentals
