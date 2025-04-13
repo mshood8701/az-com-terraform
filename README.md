@@ -1,21 +1,20 @@
-Azure Ubuntu VM Deployment with Terraform
+# Azure Ubuntu VM Deployment with Terraform
 
-This repository outlines a production-conscious deployment of an Ubuntu 22.04 LTS Virtual Machine on Microsoft Azure, using Terraform for Infrastructure-as-Code (IaC). The configuration prioritizes security, modularity, and compliance with Azure enterprise governance.
+This repository demonstrates the deployment of a secure, lightweight **Ubuntu Linux Virtual Machine (Ubuntu 22.04 LTS)** in **Microsoft Azure**, using **Terraform** as an Infrastructure-as-Code (IaC) tool. The configuration reflects a production-conscious mindset, enforcing secure SSH authentication, structured networking, and resilience against platform-level restrictions.
 
-Project Objectives
+---
 
-Deploy a Linux VM in Azure’s West US region
+## 🛠️ Project Objectives
 
-Enable secure SSH access using a static public IP
+- Provision a Linux VM in the `West US` Azure region
+- Enable secure public SSH access using a static IP
+- Automate networking components: VNet, Subnet, Route Table, NSG
+- Leverage reusable and maintainable Terraform code structure
+- Solve real-world deployment constraints (covered below)
 
-Automate creation of VNet, Subnet, Route Table, and NSG
+---
 
-Use a clean, reusable Terraform codebase
-
-Address real-world policy constraints
-
-
-Project Structure
+## 📁 Project Structure
 
 | File                  | Purpose |
 |-----------------------|---------|
@@ -25,38 +24,48 @@ Project Structure
 | `provider.tf`         | Declares Terraform provider setup |
 | `README.md`           | Documentation and project guidance |
 
+---
+
+## ⚠️ Deployment Challenges & Workarounds
+
+### ❌ Challenge 1: Azure Policy Blocked Premium SKUs
+
+**Issue**: The Azure subscription had a policy that **prevented the use of Premium SKUs** (e.g., `Premium_LRS`, certain VM sizes).
+
+**Solution**: We explicitly selected **Standard SKUs** compatible with the policy:
+```hcl
+os_disk {
+  storage_account_type = "Standard_LRS"
+}
+size = "Standard_B2s"
+
+### ❌ Challenge 2: Resource Creation was Blocked by Policy
+
+**Issue**: A restrictive policy prevented Terraform from creating certain resources.
+
+**Solution**: We used the terraform import command to bring existing Azure resources under Terraform management. This allowed us to:
+
+Preserve infrastructure already in place
+
+Continue using Terraform for change management
+
+Comply with enterprise governance constraints
 
 
-Challenge 1: Azure Policy Restricting Premium SKUs
-Issue: Subscription disallowed use of Premium_LRS and certain VM sizes
+🔐 Security Considerations
+Password login is disabled (disable_password_authentication = true)
 
-Solution: Used Standard_LRS for disk type and Standard_B2s for VM size
+SSH public key authentication is enforced
 
-Challenge 2: Restricted Resource Creation
-Issue: Policy blocked Terraform from provisioning resources group as it is a managed platform
-
-Solution: Used terraform import to manage existing infrastructure
-
-Ensured policy compliance
-
-Maintained Terraform’s benefits for future change control
+NSG restricts inbound traffic to port 22 only
 
 
-Security Best Practices Implemented
-SSH key-based access only (password authentication disabled)
+This project exemplifies:
 
-NSG limits inbound traffic to port 22 (SSH only)
+Using Terraform effectively in enterprise Azure environments
 
-Minimal, secure VM footprint
+Adapting to constraints like policy-enforced governance
 
+Secure, minimal virtual machine provisioning
 
-This project demonstrates:
-
-Secure and compliant VM provisioning with Terraform
-
-Adaptability to Azure policy constraints
-
-Production-level networking and infrastructure standards
-
-A traditional, disciplined approach to cloud automation and security
-
+Production-grade network design fundamentals
