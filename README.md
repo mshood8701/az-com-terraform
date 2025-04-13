@@ -1,7 +1,9 @@
-Deploying a Secure Ubuntu VM on Azure with Terraform
+Azure Ubuntu VM Deployment with Terraform
+
 This repository outlines a production-conscious deployment of an Ubuntu 22.04 LTS Virtual Machine on Microsoft Azure, using Terraform for Infrastructure-as-Code (IaC). The configuration prioritizes security, modularity, and compliance with Azure enterprise governance.
 
-Key Objectives
+Project Objectives
+
 Deploy a Linux VM in Azure’s West US region
 
 Enable secure SSH access using a static public IP
@@ -11,6 +13,8 @@ Automate creation of VNet, Subnet, Route Table, and NSG
 Use a clean, reusable Terraform codebase
 
 Address real-world policy constraints
+
+
 Project Structure
 
 | File                  | Purpose |
@@ -20,6 +24,7 @@ Project Structure
 | `resources-group.tf`  | Creates the Azure Resource Group |
 | `provider.tf`         | Declares Terraform provider setup |
 | `README.md`           | Documentation and project guidance |
+
 
 
 Challenge 1: Azure Policy Restricting Premium SKUs
